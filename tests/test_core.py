@@ -10,6 +10,7 @@ from moneygraph.data import DataError, load, validate
 from moneygraph.pipeline import read_config, run
 from moneygraph.temporal import temporal_features
 from scripts.make_demo import make_demo
+from scripts.sensitivity import compare_top, report
 
 
 class RoleSafetyTests(unittest.TestCase):
@@ -146,6 +147,21 @@ class PipelineTests(unittest.TestCase):
         config.write_text('{"top_n": 3}', encoding="utf-8")
         with self.assertRaises(DataError):
             read_config(config)
+
+    def test_sensitivity_report_preserves_ids_and_input_config(self):
+        before = self.cfg.copy()
+        result = report(*load(self.data, self.cfg), self.cfg)
+        self.assertEqual(self.cfg, before)
+        self.assertEqual(len(result["role_thresholds"]), 4)
+        self.assertEqual(len(result["priority_weights"]), 12)
+        self.assertTrue(set(result["baseline_top_gids"]).issubset(set(map(str, self.nodes.gid))))
+        self.assertTrue(all(0 <= item["overlap"] <= result["top_n"] for item in result["priority_weights"]))
+        self.assertTrue(all(set(item["changed_gids"]).issubset(set(map(str, self.nodes.gid)))
+                            for item in result["role_thresholds"]))
+
+    def test_top_comparison_reports_changes(self):
+        self.assertEqual(compare_top(["10", "20"], ["20", "30"]),
+                         {"overlap": 1, "entered": ["30"], "left": ["10"], "same_order": False})
 
 
 if __name__ == "__main__":
