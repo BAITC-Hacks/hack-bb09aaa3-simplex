@@ -195,28 +195,6 @@ python scripts/check_submission.py --data data --out results
 
 Тесты проверяют обрыв, seed, период наблюдения, отсутствие двойного расходования входа, неизвестные/округлённые gid, несовпадение агрегатов, сохранение изолятов, точность ID в JSON, повторяемость CSV и независимость от порядка строк. CI выполняет их на вымышленном датасете. Локальные итоги проверки реальных файлов: [docs/VALIDATION.md](docs/VALIDATION.md).
 
-## Как загрузить в ваш GitHub
-
-Назначение: `https://github.com/BAITC-Hacks/hack-bb09aaa3-simplex`.
-
-Рекомендуемый путь: клонировать существующий репозиторий, создать ветку, скопировать в него **содержимое** архива исходников проекта. Архив не содержит `.git`, реального датасета и результатов. Существующие файлы репозитория сначала сравните; его содержимое при сборке MVP не было доступно без авторизации.
-
-```bash
-git clone https://github.com/BAITC-Hacks/hack-bb09aaa3-simplex.git
-cd hack-bb09aaa3-simplex
-git switch -c feat/moneygraph-mvp
-# Скопируйте сюда исходники MoneyGraph из архива.
-git status --short
-git add .github .gitignore README.md requirements.txt config.json run.py moneygraph scripts tests docs data/.gitkeep
-git diff --cached --stat
-git commit -m "Build explainable MoneyGraph MVP for HackAlem"
-git push -u origin feat/moneygraph-mvp
-```
-
-На GitHub откройте Pull Request из `feat/moneygraph-mvp` в основную ветку. `.gitignore` исключает `data/` и `results/`; если эти файлы уже были отслеживаемыми в существующем репозитории, `.gitignore` сам по себе не прекращает их отслеживание — проверьте список staged-файлов. Не используйте force push.
-
-Вариант без локального Git: после входа в GitHub создайте ветку, откройте **Add file → Upload files**, загрузите распакованные исходники (не ZIP и не датасет), затем создайте PR. Команды CI и README остаются теми же.
-
 ## До 1 млн узлов
 
 Текущая реализация рассчитана на объём хакатона; обещания пяти минут для миллиона узлов нет. При росте нужны:
