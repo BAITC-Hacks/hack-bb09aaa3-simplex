@@ -1,0 +1,18 @@
+{
+  "max_depth": 4,
+  "min_transaction_kzt": 5000,
+  "period_start": "2026-07-01",
+  "period_end": "2026-07-31",
+  "consolidator_min_in": 3,
+  "distributor_min_out": 10,
+  "transit_ratio_min": 0.8,
+  "transit_ratio_max": 1.2,
+  "terminal_ratio_max": 0.1,
+  "temporal_window_days": 2,
+  "coordinator_min_seeds": 2,
+  "coordinator_min_clusters": 2,
+  "coordinator_betweenness_percentile": 0.9,
+  "louvain_resolution": 1.0,
+  "random_seed": 42,
+  "top_n": 50
+}
